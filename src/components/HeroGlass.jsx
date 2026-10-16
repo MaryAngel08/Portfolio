@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import SeamlessVideo from './SeamlessVideo'
+import { useMediaFlags } from '../hooks/useMediaFlags'
 
 const NAV = [
   { href: '#top', label: 'Home' },
@@ -19,8 +20,11 @@ const HERO_VIDEO_MP4 = '/videos/hero-glass-wave.mp4'
 const HERO_POSTER = '/images/hero-glass-wave-poster.jpg'
 
 export default function HeroGlass() {
+  const { isMobile } = useMediaFlags()
   const [navScrolled, setNavScrolled] = useState(false)
   const [activeHref, setActiveHref] = useState('#top')
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuId = useId()
 
   useEffect(() => {
     document.title = 'Mary — Web Designer'
@@ -56,10 +60,36 @@ export default function HeroGlass() {
     return () => io.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (!menuOpen) return undefined
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKey = (e) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = prev
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [menuOpen])
+
+  // Close overlay when leaving mobile/tablet breakpoint
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1100px)')
+    const onChange = () => {
+      if (!mq.matches) setMenuOpen(false)
+    }
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  const closeMenu = () => setMenuOpen(false)
+
   return (
     <>
       <header
-        className={`site-nav${navScrolled ? ' is-scrolled' : ''}`}
+        className={`site-nav${navScrolled ? ' is-scrolled' : ''}${menuOpen ? ' is-menu-open' : ''}`}
       >
         <div className="site-nav__inner">
           <a className="site-nav__logo" href="#top" aria-label="Mary home">
@@ -81,6 +111,47 @@ export default function HeroGlass() {
             ))}
           </nav>
           <a className="site-nav__cta" href="#contact">
+            Let’s talk
+          </a>
+          <button
+            type="button"
+            className="site-nav__menu-btn"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls={menuId}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className="site-nav__menu-icon" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+        </div>
+
+        <div
+          id={menuId}
+          className={`site-nav__overlay${menuOpen ? ' is-open' : ''}`}
+          aria-hidden={!menuOpen}
+        >
+          <nav className="site-nav__overlay-nav" aria-label="Mobile">
+            {NAV.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className={activeHref === item.href ? 'is-active' : undefined}
+                aria-current={activeHref === item.href ? 'true' : undefined}
+                onClick={closeMenu}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+          <a
+            className="site-nav__overlay-cta"
+            href="#contact"
+            onClick={closeMenu}
+          >
             Let’s talk
           </a>
         </div>
@@ -107,17 +178,20 @@ export default function HeroGlass() {
                 poster={HERO_POSTER}
                 width={2560}
                 height={1440}
-                crossfade={1.2}
+                crossfade={isMobile ? 0.45 : 1.2}
+                lite={isMobile}
               />
-              <SeamlessVideo
-                className="hero-glass__image hero-glass__image--reflect"
-                webm={HERO_VIDEO_WEBM}
-                mp4={HERO_VIDEO_MP4}
-                poster={HERO_POSTER}
-                width={2560}
-                height={1440}
-                crossfade={1.2}
-              />
+              {!isMobile && (
+                <SeamlessVideo
+                  className="hero-glass__image hero-glass__image--reflect"
+                  webm={HERO_VIDEO_WEBM}
+                  mp4={HERO_VIDEO_MP4}
+                  poster={HERO_POSTER}
+                  width={2560}
+                  height={1440}
+                  crossfade={1.2}
+                />
+              )}
             </div>
           </div>
         </div>

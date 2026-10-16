@@ -14,6 +14,8 @@ export default function SeamlessVideo({
   width = 1920,
   height = 1080,
   crossfade = CROSSFADE_S,
+  /** Single looping video — cheaper on mobile (no dual rAF crossfade). */
+  lite = false,
 }) {
   const rootRef = useRef(null)
   const videoARef = useRef(null)
@@ -32,8 +34,40 @@ export default function SeamlessVideo({
     return () => mq.removeEventListener('change', sync)
   }, [])
 
+  // Lite: one native-loop video, pause when offscreen
   useEffect(() => {
-    if (reduceMotion) return undefined
+    if (reduceMotion || !lite) return undefined
+    const root = rootRef.current
+    const video = videoARef.current
+    if (!root || !video) return undefined
+
+    video.muted = true
+    video.playsInline = true
+    video.loop = true
+    video.style.opacity = '1'
+
+    const playSafe = () => {
+      const p = video.play()
+      if (p?.catch) p.catch(() => {})
+    }
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) playSafe()
+        else video.pause()
+      },
+      { threshold: 0.12 },
+    )
+    io.observe(root)
+    playSafe()
+    return () => {
+      io.disconnect()
+      video.pause()
+    }
+  }, [reduceMotion, lite, webm, mp4])
+
+  useEffect(() => {
+    if (reduceMotion || lite) return undefined
 
     const root = rootRef.current
     const videoA = videoARef.current
@@ -145,6 +179,27 @@ export default function SeamlessVideo({
           height={height}
           decoding="async"
         />
+      </div>
+    )
+  }
+
+  if (lite) {
+    return (
+      <div ref={rootRef} className={`seamless-video seamless-video--lite ${className}`.trim()}>
+        <video
+          ref={videoARef}
+          className="seamless-video__layer"
+          muted
+          playsInline
+          loop
+          preload="metadata"
+          autoPlay
+          width={width}
+          height={height}
+        >
+          <source src={webm} type="video/webm" />
+          <source src={mp4} type="video/mp4" />
+        </video>
       </div>
     )
   }

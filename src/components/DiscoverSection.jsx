@@ -119,7 +119,7 @@ export default function DiscoverSection() {
           <h2 className="discover-title">
             The designer behind
             <br />
-            <span className="text-gradient">SpiderMary.</span>
+            <span className="text-gradient">Mary.</span>
           </h2>
           <p className="discover-body">
             I&apos;m Mary, a web designer creating thoughtful, modern and

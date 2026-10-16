@@ -23,7 +23,7 @@ export default function HeroGlass() {
   const [activeHref, setActiveHref] = useState('#top')
 
   useEffect(() => {
-    document.title = 'SpiderMary — Web Designer'
+    document.title = 'Mary — Web Designer'
   }, [])
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function HeroGlass() {
       <section
         id="top"
         className="theme-glass section-dark hero-glass"
-        aria-label="SpiderMary hero"
+        aria-label="Mary"
       >
         <div className="hero-glass__bg" aria-hidden="true">
           <span className="hero-glass__orb hero-glass__orb--a" />
@@ -131,10 +131,10 @@ export default function HeroGlass() {
                 <br />
                 that make
                 <br />
-                your brand.
+                your brand
                 <br />
                 <span className="hero-glass__title-gradient text-gradient">
-                  stand out
+                  stand out.
                 </span>
               </h1>
               <p className="hero-glass__intro">

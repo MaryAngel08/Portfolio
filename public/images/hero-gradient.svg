@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Base: deep midnight � surface navy (GlassWave / cssgradient-style blend) -->
+    <linearGradient id="base" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#000000"/>
+      <stop offset="42%" stop-color="#061428"/>
+      <stop offset="100%" stop-color="#081B33"/>
+    </linearGradient>
+
+    <!-- Soft center bloom  keeps ribbon lit without washing copy -->
+    <radialGradient id="bloom" cx="58%" cy="48%" r="48%">
+      <stop offset="0%" stop-color="#2563FF" stop-opacity="0.28"/>
+      <stop offset="45%" stop-color="#1A4FD6" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Ice cyan rim light  top-right -->
+    <radialGradient id="cyan" cx="82%" cy="22%" r="40%">
+      <stop offset="0%" stop-color="#69D7FF" stop-opacity="0.22"/>
+      <stop offset="55%" stop-color="#2563FF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Electric accent  lower-left under copy -->
+    <radialGradient id="accent" cx="18%" cy="72%" r="38%">
+      <stop offset="0%" stop-color="#2563FF" stop-opacity="0.18"/>
+      <stop offset="60%" stop-color="#081B33" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Cool vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="72%">
+      <stop offset="55%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#00050D" stop-opacity="0.55"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#base)"/>
+  <rect width="1920" height="1080" fill="url(#bloom)"/>
+  <rect width="1920" height="1080" fill="url(#cyan)"/>
+  <rect width="1920" height="1080" fill="url(#accent)"/>
+  <rect width="1920" height="1080" fill="url(#vignette)"/>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" fill="none" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g1" x1="120" y1="180" x2="1320" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563FF" stop-opacity="0.14"/>
+      <stop offset="0.45" stop-color="#69D7FF" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#2563FF" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="200" y1="640" x2="1280" y2="220" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#69D7FF" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#2563FF" stop-opacity="0.05"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+  </defs>
+  <rect width="1440" height="900" fill="#FFFFFF"/>
+  <ellipse cx="1080" cy="220" rx="420" ry="260" fill="#69D7FF" fill-opacity="0.1" filter="url(#soft)"/>
+  <ellipse cx="280" cy="680" rx="380" ry="240" fill="#2563FF" fill-opacity="0.08" filter="url(#soft)"/>
+  <path d="M-40 520 C 220 420, 380 610, 620 540 C 860 470, 980 300, 1220 360 C 1360 396, 1480 480, 1520 540" stroke="url(#g1)" stroke-width="90" stroke-linecap="round" opacity="0.55" filter="url(#soft)"/>
+  <path d="M-60 580 C 200 490, 400 660, 640 590 C 880 520, 1020 360, 1260 410 C 1380 440, 1500 520, 1540 580" stroke="url(#g2)" stroke-width="54" stroke-linecap="round" opacity="0.7" filter="url(#soft)"/>
+  <path d="M-20 610 C 240 530, 420 690, 660 620 C 900 550, 1040 400, 1280 450 C 1400 476, 1500 540, 1560 600" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" opacity="0.65"/>
+</svg>

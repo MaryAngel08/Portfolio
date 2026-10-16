@@ -1,4 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import SeamlessVideo from './SeamlessVideo'
+
+const ABOUT_GLASS_MP4 = '/videos/about-glass.mp4'
+const ABOUT_GLASS_POSTER = '/images/about-glass.jpg'
 
 /**
  * About card: glass image by default; portrait revealed under the cursor
@@ -130,8 +134,16 @@ export default function DiscoverSection() {
 
           <ul className="discover-traits">
             <li>
-              <strong>Thoughtful Design</strong>
-              <span>Clarity and purpose first</span>
+              <strong>
+                Thoughtful
+                <br />
+                Design
+              </strong>
+              <span>
+                Clarity and
+                <br />
+                purpose first
+              </span>
             </li>
             <li>
               <strong>Responsive by Nature</strong>
@@ -153,7 +165,18 @@ export default function DiscoverSection() {
 
         <div className="discover-visual">
           <div ref={stageRef} className="discover-stage">
-            <div className="discover-cover" aria-hidden="true" />
+            <div className="discover-cover" aria-hidden="true">
+              {!reduceMotion && (
+                <SeamlessVideo
+                  className="discover-cover__video"
+                  mp4={ABOUT_GLASS_MP4}
+                  poster={ABOUT_GLASS_POSTER}
+                  width={720}
+                  height={1280}
+                  crossfade={0.85}
+                />
+              )}
+            </div>
             <div ref={photoRef} className="discover-photo" aria-hidden="true" />
 
             {!reduceMotion && hintVisible && (

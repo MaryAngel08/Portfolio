@@ -1,7 +1,12 @@
 import { useEffect, useRef } from 'react'
 
-const COUNT = 110
-const LINK_DIST = 150
+const COUNT_DESKTOP = 100
+const COUNT_MOBILE = 22
+const LINK_DIST_DESKTOP = 150
+const LINK_DIST_MOBILE = 110
+/** Keep dots from stacking when they are not linked/touching. */
+const SEPARATE_DIST_DESKTOP = 28
+const SEPARATE_DIST_MOBILE = 36
 const CURSOR_DIST = 210
 /** Slow drift speed (px per frame at ~60fps). */
 const SPEED_MIN = 0.04
@@ -21,6 +26,7 @@ export default function PricingNetwork() {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduceMotion) return undefined
 
+    const mobileQuery = window.matchMedia('(max-width: 768px)')
     const ctx = canvas.getContext('2d', { alpha: true })
     if (!ctx) return undefined
 
@@ -29,6 +35,8 @@ export default function PricingNetwork() {
     let width = 0
     let height = 0
     let dpr = 1
+    let linkDist = LINK_DIST_DESKTOP
+    let separateDist = SEPARATE_DIST_DESKTOP
     const pointer = { x: -9999, y: -9999, active: false }
     /** @type {{ x: number, y: number, vx: number, vy: number, phase: number }[]} */
     let particles = []
@@ -48,19 +56,26 @@ export default function PricingNetwork() {
       }
     }
 
+    const particleCount = () =>
+      mobileQuery.matches ? COUNT_MOBILE : COUNT_DESKTOP
+
     const resize = () => {
       if (!section) return
       const rect = section.getBoundingClientRect()
       dpr = Math.min(window.devicePixelRatio || 1, 2)
       width = rect.width
       height = rect.height
+      linkDist = mobileQuery.matches ? LINK_DIST_MOBILE : LINK_DIST_DESKTOP
+      separateDist = mobileQuery.matches
+        ? SEPARATE_DIST_MOBILE
+        : SEPARATE_DIST_DESKTOP
       canvas.width = Math.max(1, Math.floor(width * dpr))
       canvas.height = Math.max(1, Math.floor(height * dpr))
       canvas.style.width = `${width}px`
       canvas.style.height = `${height}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-      particles = Array.from({ length: COUNT }, spawn)
+      particles = Array.from({ length: particleCount() }, spawn)
     }
 
     const onMove = (e) => {
@@ -130,13 +145,40 @@ export default function PricingNetwork() {
         }
       }
 
+      // Push pairs apart when they crowd closer than the separate radius
+      for (let i = 0; i < particles.length; i += 1) {
+        const a = particles[i]
+        for (let j = i + 1; j < particles.length; j += 1) {
+          const b = particles[j]
+          const dx = b.x - a.x
+          const dy = b.y - a.y
+          const dist = Math.hypot(dx, dy) || 0.001
+          if (dist >= separateDist) continue
+
+          const overlap = (separateDist - dist) / separateDist
+          const nx = dx / dist
+          const ny = dy / dist
+          const push = overlap * 0.55
+          a.vx -= nx * push
+          a.vy -= ny * push
+          b.vx += nx * push
+          b.vy += ny * push
+
+          const shift = (separateDist - dist) * 0.5
+          a.x -= nx * shift
+          a.y -= ny * shift
+          b.x += nx * shift
+          b.y += ny * shift
+        }
+      }
+
       for (let i = 0; i < particles.length; i += 1) {
         const a = particles[i]
         for (let j = i + 1; j < particles.length; j += 1) {
           const b = particles[j]
           const dist = Math.hypot(a.x - b.x, a.y - b.y)
-          if (dist >= LINK_DIST) continue
-          const alpha = (1 - dist / LINK_DIST) * 0.55
+          if (dist >= linkDist) continue
+          const alpha = (1 - dist / linkDist) * 0.55
           drawLink(a.x, a.y, b.x, b.y, alpha, 'rgba(105, 215, 255, ALPHA)')
         }
       }
@@ -155,10 +197,11 @@ export default function PricingNetwork() {
         ctx.fill()
       }
 
+      const dotR = mobileQuery.matches ? 1.55 : 2.1
       for (const p of particles) {
         ctx.beginPath()
         ctx.fillStyle = 'rgba(105, 215, 255, 0.88)'
-        ctx.arc(p.x, p.y, 2.1, 0, Math.PI * 2)
+        ctx.arc(p.x, p.y, dotR, 0, Math.PI * 2)
         ctx.fill()
       }
 
@@ -170,6 +213,7 @@ export default function PricingNetwork() {
     section?.addEventListener('pointermove', onMove, { passive: true })
     section?.addEventListener('pointerleave', onLeave, { passive: true })
     window.addEventListener('resize', resize)
+    mobileQuery.addEventListener('change', resize)
 
     const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(resize) : null
     if (section && ro) ro.observe(section)
@@ -179,6 +223,7 @@ export default function PricingNetwork() {
       section?.removeEventListener('pointermove', onMove)
       section?.removeEventListener('pointerleave', onLeave)
       window.removeEventListener('resize', resize)
+      mobileQuery.removeEventListener('change', resize)
       ro?.disconnect()
     }
   }, [])

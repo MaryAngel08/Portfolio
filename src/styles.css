@@ -466,7 +466,7 @@ html.has-motion-fx .glass-card:hover::before {
   font-weight: 500;
   line-height: 1.2;
   text-decoration: none;
-  border-radius: 999px;
+  border-radius: var(--radius-glass);
   border: 1px solid transparent;
   cursor: pointer;
   font-optical-sizing: auto;
@@ -1107,12 +1107,12 @@ html.has-motion-fx .glass-card:hover::before {
   width: 100%;
   max-width: 420px;
   aspect-ratio: 3 / 4;
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: var(--radius-glass);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 18px 40px rgba(0, 0, 0, 0.18);
   cursor: crosshair;
   touch-action: none;
   overflow: hidden;
@@ -1125,12 +1125,49 @@ html.has-motion-fx .glass-card:hover::before {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background-color: transparent;
+  /* Solid black only — no still behind the video (avoids white flash on fade) */
+  background-color: #000000;
+  background-image: none;
+  pointer-events: none;
+}
+
+.discover-cover:not(:has(.discover-cover__video)) {
   background-image: url('/images/about-glass.jpg');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
+}
+
+/* Same dual-layer seamless stack as the hero sculpture */
+.discover-cover__video.seamless-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
   pointer-events: none;
+  isolation: isolate;
+}
+
+.discover-cover__video .seamless-video__layer,
+.discover-cover__video .seamless-video__poster {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  background: #000000;
+  pointer-events: none;
+}
+
+.discover-cover__video .seamless-video__layer {
+  opacity: 0;
+  will-change: opacity;
+  /* Prevent GPU blend flashes during opacity crossfade */
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Portrait on top — revealed by clip-path circle under the cursor */
@@ -1160,7 +1197,7 @@ html.has-motion-fx .glass-card:hover::before {
   font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(10, 26, 51, 0.45);
+  color: rgba(255, 255, 255, 0.55);
   pointer-events: none;
 }
 
@@ -2055,7 +2092,8 @@ html.has-motion-fx .glass-card:hover::before {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: #ffffff;
+  --bg: transparent;
+  background: transparent;
 }
 
 .projects__bg {
@@ -2064,6 +2102,8 @@ html.has-motion-fx .glass-card:hover::before {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  background:
+    linear-gradient(160deg, #e8eef8 0%, #dce6f4 45%, #eef3fb 100%);
 }
 
 .projects__bg img {
@@ -2072,7 +2112,86 @@ html.has-motion-fx .glass-card:hover::before {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  opacity: 0.3;
+  opacity: 0.55;
+  transform: scale(1.06);
+  filter: saturate(1.05) contrast(1.04);
+}
+
+.projects__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(48px);
+  opacity: 0.85;
+  will-change: transform;
+}
+
+.projects__glow--a {
+  width: min(52vw, 480px);
+  height: min(52vw, 480px);
+  top: -8%;
+  left: -6%;
+  background: radial-gradient(
+    circle,
+    rgba(37, 99, 255, 0.42) 0%,
+    rgba(37, 99, 255, 0) 70%
+  );
+}
+
+.projects__glow--b {
+  width: min(46vw, 420px);
+  height: min(46vw, 420px);
+  top: 12%;
+  right: -8%;
+  background: radial-gradient(
+    circle,
+    rgba(105, 215, 255, 0.5) 0%,
+    rgba(105, 215, 255, 0) 70%
+  );
+}
+
+.projects__glow--c {
+  width: min(58vw, 520px);
+  height: min(58vw, 520px);
+  bottom: -12%;
+  left: 18%;
+  background: radial-gradient(
+    circle,
+    rgba(80, 140, 255, 0.38) 0%,
+    rgba(80, 140, 255, 0) 70%
+  );
+}
+
+.projects__glow--d {
+  width: min(40vw, 360px);
+  height: min(40vw, 360px);
+  bottom: 18%;
+  right: 12%;
+  background: radial-gradient(
+    circle,
+    rgba(180, 220, 255, 0.55) 0%,
+    rgba(180, 220, 255, 0) 68%
+  );
+}
+
+.projects__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(
+      ellipse 90% 75% at 50% 40%,
+      transparent 0%,
+      rgba(255, 255, 255, 0.12) 62%,
+      rgba(255, 255, 255, 0.32) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(255, 255, 255, 0.28) 100%
+    );
 }
 
 .projects__inner {
@@ -2128,24 +2247,53 @@ html.has-motion-fx .glass-card:hover::before {
 }
 
 .project-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: #ffffff;
+  isolation: isolate;
+  background: rgba(255, 255, 255, 0.32);
   border: 1px solid rgba(10, 26, 51, 0.08);
   border-radius: var(--radius-glass);
-  box-shadow: 0 16px 40px rgba(10, 26, 51, 0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.18),
+    0 18px 48px rgba(10, 26, 51, 0.1);
   color: var(--text);
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
   transition: transform var(--duration) var(--ease),
-    box-shadow var(--duration) var(--ease);
+    box-shadow var(--duration) var(--ease),
+    border-color var(--duration) var(--ease);
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.08) 42%,
+    transparent 68%
+  );
 }
 
 .project-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 22px 48px rgba(10, 26, 51, 0.1);
+  border-color: rgba(10, 26, 51, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2),
+    0 24px 56px rgba(10, 26, 51, 0.14);
 }
 
 .project-card__main {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   min-height: 0;
@@ -2160,18 +2308,7 @@ html.has-motion-fx .glass-card:hover::before {
   min-height: 100%;
   padding: clamp(1.1rem, 2.2vw, 1.5rem) clamp(0.85rem, 1.8vw, 1.25rem);
   overflow: hidden;
-  background:
-    radial-gradient(
-      ellipse 80% 70% at 30% 40%,
-      rgba(37, 99, 255, 0.1) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse 60% 55% at 85% 75%,
-      rgba(105, 215, 255, 0.12) 0%,
-      transparent 55%
-    ),
-    linear-gradient(160deg, #eef2f8 0%, #e4ebf5 48%, #dce6f4 100%);
+  background: transparent;
 }
 
 .project-card__devices {
@@ -2275,12 +2412,13 @@ html.has-motion-fx .glass-card:hover::before {
 
 .project-card__content {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: clamp(1.1rem, 2.2vw, 1.5rem);
   text-align: left;
-  background: #ffffff;
+  background: transparent;
 }
 
 .project-card__badge {
@@ -2288,7 +2426,9 @@ html.has-motion-fx .glass-card:hover::before {
   align-items: center;
   justify-content: center;
   margin-bottom: 0.75rem;
-  padding: 0.35rem 0.7rem 0.35rem 0.82rem;
+  box-sizing: border-box;
+  padding: 0.4rem 0.78rem;
+  padding-inline-end: calc(0.78rem - 0.12em);
   border: 1px solid var(--blue);
   border-radius: 999px;
   font-size: 0.62rem;
@@ -2298,6 +2438,9 @@ html.has-motion-fx .glass-card:hover::before {
   text-align: center;
   text-transform: uppercase;
   color: var(--blue);
+  text-box: trim-both cap alphabetic;
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
 }
 
 .project-card__badge.is-live {
@@ -2366,14 +2509,16 @@ html.has-motion-fx .glass-card:hover::before {
 }
 
 .project-card__footer {
+  position: relative;
+  z-index: 1;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 0.85rem;
   flex-wrap: wrap;
   padding: 0.9rem clamp(1.1rem, 2.2vw, 1.5rem);
   border-top: 1px solid rgba(10, 26, 51, 0.08);
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .project-card__skills ul {
@@ -2395,11 +2540,16 @@ html.has-motion-fx .glass-card:hover::before {
 }
 
 .project-card__cta.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  box-sizing: border-box;
+  min-height: 48px;
+  padding: 0 1.35rem;
   white-space: nowrap;
   line-height: 1;
   text-align: center;
-  align-items: center;
-  justify-content: center;
 }
 
 @media (max-width: 1100px) {
@@ -2980,6 +3130,10 @@ html.has-motion-fx .glass-card:hover::before {
   .section-light .glass-card,
   .glass-card--light {
     background: rgba(255, 255, 255, 0.94);
+  }
+
+  .project-card {
+    background: rgba(255, 255, 255, 0.88);
   }
 
   .discover-stage {

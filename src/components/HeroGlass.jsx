@@ -93,10 +93,14 @@ export default function HeroGlass() {
       >
         <div className="site-nav__inner">
           <a className="site-nav__logo" href="#top" aria-label="Mary home">
-            <span className="site-nav__mark" aria-hidden="true">
-              M
-            </span>
-            <span className="site-nav__name">Mary</span>
+            <img
+              className="site-nav__logo-img"
+              src="/images/mary-logo.png"
+              alt="Mary"
+              width={160}
+              height={48}
+              decoding="async"
+            />
           </a>
           <nav className="site-nav__links" aria-label="Primary">
             {NAV.map((item) => (

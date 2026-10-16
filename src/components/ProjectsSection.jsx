@@ -158,6 +158,10 @@ export default function ProjectsSection() {
     >
       <div className="projects__bg" aria-hidden="true">
         <img src="/images/projects-bg.jpg" alt="" />
+        <div className="projects__glow projects__glow--a" />
+        <div className="projects__glow projects__glow--b" />
+        <div className="projects__glow projects__glow--c" />
+        <div className="projects__glow projects__glow--d" />
       </div>
       <div className="section-inner projects__inner">
         <header className="projects__header">

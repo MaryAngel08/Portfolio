@@ -104,6 +104,50 @@ export default function SeamlessVideo({
       playSafe(active)
     }
 
+    const beginCrossfade = (active, standby) => {
+      fading = true
+
+      const swap = () => {
+        playSafe(standby)
+        // Wait one paint so the standby frame is on screen before fading
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setOpacity(standby, 1)
+            setOpacity(active, 0)
+
+            fadeTimer = window.setTimeout(() => {
+              active.pause()
+              try {
+                active.currentTime = 0
+              } catch {
+                /* ignore */
+              }
+              front = 1 - front
+              fading = false
+            }, crossfade * 1000)
+          })
+        })
+      }
+
+      const onSeeked = () => {
+        standby.removeEventListener('seeked', onSeeked)
+        swap()
+      }
+
+      standby.addEventListener('seeked', onSeeked)
+      try {
+        if (standby.currentTime === 0 && standby.readyState >= 2) {
+          standby.removeEventListener('seeked', onSeeked)
+          swap()
+        } else {
+          standby.currentTime = 0
+        }
+      } catch {
+        standby.removeEventListener('seeked', onSeeked)
+        swap()
+      }
+    }
+
     const tick = () => {
       raf = requestAnimationFrame(tick)
       if (!visible || fading) return
@@ -115,26 +159,7 @@ export default function SeamlessVideo({
       if (!Number.isFinite(duration) || duration <= crossfade) return
 
       if (active.currentTime >= duration - crossfade) {
-        fading = true
-        try {
-          standby.currentTime = 0
-        } catch {
-          /* ignore */
-        }
-        playSafe(standby)
-        setOpacity(active, 0)
-        setOpacity(standby, 1)
-
-        fadeTimer = window.setTimeout(() => {
-          active.pause()
-          try {
-            active.currentTime = 0
-          } catch {
-            /* ignore */
-          }
-          front = 1 - front
-          fading = false
-        }, crossfade * 1000)
+        beginCrossfade(active, standby)
       }
     }
 
@@ -183,6 +208,13 @@ export default function SeamlessVideo({
     )
   }
 
+  const sources = (
+    <>
+      {webm ? <source src={webm} type="video/webm" /> : null}
+      {mp4 ? <source src={mp4} type="video/mp4" /> : null}
+    </>
+  )
+
   if (lite) {
     return (
       <div ref={rootRef} className={`seamless-video seamless-video--lite ${className}`.trim()}>
@@ -197,8 +229,7 @@ export default function SeamlessVideo({
           width={width}
           height={height}
         >
-          <source src={webm} type="video/webm" />
-          <source src={mp4} type="video/mp4" />
+          {sources}
         </video>
       </div>
     )
@@ -216,8 +247,7 @@ export default function SeamlessVideo({
         width={width}
         height={height}
       >
-        <source src={webm} type="video/webm" />
-        <source src={mp4} type="video/mp4" />
+        {sources}
       </video>
       <video
         ref={videoBRef}
@@ -229,8 +259,7 @@ export default function SeamlessVideo({
         height={height}
         tabIndex={-1}
       >
-        <source src={webm} type="video/webm" />
-        <source src={mp4} type="video/mp4" />
+        {sources}
       </video>
     </div>
   )

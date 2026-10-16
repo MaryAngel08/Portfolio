@@ -1,4 +1,4 @@
-# Mary
+# Mary Portfolio
 
 A cinematic, real-time 3D glass sculpture scene built with Vite, React, Three.js, and React Three Fiber.
 

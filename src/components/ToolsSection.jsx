@@ -1,7 +1,7 @@
 const TOOLS = [
   {
     name: 'Figma',
-    category: 'Design & prototyping',
+    category: 'Design',
     body: 'For planning layouts, exploring ideas, and creating interface designs.',
     logo: '/images/tools/figma.png',
   },
@@ -49,11 +49,11 @@ export default function ToolsSection() {
         <header className="tools-tech__copy">
           <p className="section-eyebrow">Tools &amp; Technologies</p>
           <h2 id="tools-title" className="section-title">
-            The stack I <span className="text-gradient">ship with</span>
+            My <span className="text-gradient">tools</span>
           </h2>
           <p className="section-lede section-lede--light">
             Design-to-code tools chosen for speed in exploration and precision
-            in production — not for trend lists.
+            in production, not for trend lists.
           </p>
         </header>
 

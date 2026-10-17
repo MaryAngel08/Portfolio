@@ -6,7 +6,7 @@ const SERVICES = [
   },
   {
     title: 'Responsive Development',
-    body: 'Pixel-true builds across phones, tablets, and desktops — fast, accessible, and easy to maintain.',
+    body: 'Pixel-true builds across phones, tablets, and desktops: fast, accessible, and easy to maintain.',
     icon: 'devices',
   },
   {

@@ -27,7 +27,7 @@ export default function HeroGlass() {
   const menuId = useId()
 
   useEffect(() => {
-    document.title = 'Mary — Web Designer'
+    document.title = 'Mary | Web Designer'
   }, [])
 
   useEffect(() => {
@@ -93,14 +93,7 @@ export default function HeroGlass() {
       >
         <div className="site-nav__inner">
           <a className="site-nav__logo" href="#top" aria-label="Mary home">
-            <img
-              className="site-nav__logo-img"
-              src="/images/mary-logo.png"
-              alt="Mary"
-              width={160}
-              height={48}
-              decoding="async"
-            />
+            Mary
           </a>
           <nav className="site-nav__links" aria-label="Primary">
             {NAV.map((item) => (

@@ -1,6 +1,27 @@
 import { useState } from 'react'
 
-const INITIAL = { name: '', email: '', message: '' }
+const INITIAL = {
+  name: '',
+  email: '',
+  projectType: '',
+  timeline: '',
+  message: '',
+}
+
+const PROJECT_TYPES = [
+  { value: '', label: 'Select one' },
+  { value: 'new-website', label: 'New website' },
+  { value: 'landing-page', label: 'Landing page' },
+  { value: 'redesign', label: 'Redesign' },
+  { value: 'not-sure', label: 'Not sure yet' },
+]
+
+const TIMELINES = [
+  { value: '', label: 'Select one' },
+  { value: 'asap', label: 'As soon as possible' },
+  { value: '1-2-months', label: '1-2 months' },
+  { value: 'exploring', label: 'Just exploring' },
+]
 
 /**
  * Contact — light section, copy left + glass form right.
@@ -18,10 +39,7 @@ export default function ContactSection() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) {
       next.email = 'Enter a valid email address.'
     }
-    if (!values.message.trim()) next.message = 'Please write a short message.'
-    else if (values.message.trim().length < 10) {
-      next.message = 'A bit more detail helps (10+ characters).'
-    }
+    if (!values.projectType) next.projectType = 'Please choose a project type.'
     setErrors(next)
     return Object.keys(next).length === 0
   }
@@ -38,6 +56,7 @@ export default function ContactSection() {
       setStatus('error')
       return
     }
+    console.log('Contact form submit:', values)
     setStatus('sent')
     setValues(INITIAL)
   }
@@ -62,7 +81,7 @@ export default function ContactSection() {
             </h2>
             <p className="section-lede section-lede--light">
               Tell me about your brand, timeline, and the feeling you want the
-              site to leave. Based in Austria — working with clients worldwide.
+              site to leave. Based in Austria, working with clients worldwide.
             </p>
 
             <dl className="contact__details">
@@ -135,28 +154,78 @@ export default function ContactSection() {
             </div>
 
             <div className="contact-form__field">
+              <label className="contact-form__label" htmlFor="contact-project-type">
+                Project type
+              </label>
+              <select
+                id="contact-project-type"
+                className={`contact-form__input contact-form__select${
+                  errors.projectType ? ' is-invalid' : ''
+                }${values.projectType ? '' : ' is-placeholder'}`}
+                name="projectType"
+                required
+                value={values.projectType}
+                onChange={onChange}
+                aria-invalid={errors.projectType ? 'true' : 'false'}
+                aria-describedby={
+                  errors.projectType ? 'contact-project-type-error' : undefined
+                }
+              >
+                {PROJECT_TYPES.map((option) => (
+                  <option
+                    key={option.label}
+                    value={option.value}
+                    disabled={option.value === ''}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {errors.projectType ? (
+                <p id="contact-project-type-error" className="contact-form__error">
+                  {errors.projectType}
+                </p>
+              ) : null}
+            </div>
+
+            <div className="contact-form__field">
+              <label className="contact-form__label" htmlFor="contact-timeline">
+                Timeline
+              </label>
+              <select
+                id="contact-timeline"
+                className={`contact-form__input contact-form__select${
+                  values.timeline ? '' : ' is-placeholder'
+                }`}
+                name="timeline"
+                value={values.timeline}
+                onChange={onChange}
+              >
+                {TIMELINES.map((option) => (
+                  <option
+                    key={option.label}
+                    value={option.value}
+                    disabled={option.value === ''}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="contact-form__field">
               <label className="contact-form__label" htmlFor="contact-message">
                 Message
               </label>
               <textarea
                 id="contact-message"
-                className={`contact-form__input contact-form__textarea${
-                  errors.message ? ' is-invalid' : ''
-                }`}
+                className="contact-form__input contact-form__textarea"
                 name="message"
                 rows={5}
-                required
                 value={values.message}
                 onChange={onChange}
-                aria-invalid={errors.message ? 'true' : 'false'}
-                aria-describedby={errors.message ? 'contact-message-error' : undefined}
                 placeholder="Goals, references, timing…"
               />
-              {errors.message ? (
-                <p id="contact-message-error" className="contact-form__error">
-                  {errors.message}
-                </p>
-              ) : null}
             </div>
 
             <button className="btn btn-primary contact-form__submit" type="submit">
@@ -165,7 +234,7 @@ export default function ContactSection() {
 
             <p className="contact-form__status" role="status" aria-live="polite">
               {status === 'sent'
-                ? 'Thanks — I’ll reply within two business days.'
+                ? "Thanks, I'll reply soon."
                 : status === 'error'
                   ? 'Please fix the fields above and try again.'
                   : 'No spam. Discovery call if we’re a fit.'}
@@ -173,7 +242,6 @@ export default function ContactSection() {
           </form>
         </div>
       </div>
-
     </section>
   )
 }

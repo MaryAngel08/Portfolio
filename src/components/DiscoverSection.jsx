@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import SeamlessVideo from './SeamlessVideo'
 
+const ABOUT_GLASS_WEBM = '/videos/about-glass.webm'
 const ABOUT_GLASS_MP4 = '/videos/about-glass.mp4'
 const ABOUT_GLASS_POSTER = '/images/about-glass.jpg'
 
@@ -126,9 +127,11 @@ export default function DiscoverSection() {
             <span className="text-gradient">Mary.</span>
           </h2>
           <p className="discover-body">
-            I&apos;m Mary, a web designer creating thoughtful, modern and
-            responsive websites. I combine visual design with front-end
-            development to turn ideas into sites that feel clear, distinctive
+            I&apos;m Mary, a web designer based in Austria. I started building
+            websites because I loved how design and code come together. I&apos;m
+            early in my career, which means every project gets my full attention,
+            fast replies and fresh ideas. I design in Figma, build with clean
+            HTML, CSS and JavaScript, and care most about sites that feel clear
             and easy to use.
           </p>
 
@@ -157,7 +160,7 @@ export default function DiscoverSection() {
 
           <div className="discover-actions">
             <a className="btn btn-primary" href="#contact">
-              My story
+              Let&apos;s work together
             </a>
             <p className="discover-location">Based in Austria</p>
           </div>
@@ -169,11 +172,12 @@ export default function DiscoverSection() {
               {!reduceMotion && (
                 <SeamlessVideo
                   className="discover-cover__video"
+                  webm={ABOUT_GLASS_WEBM}
                   mp4={ABOUT_GLASS_MP4}
                   poster={ABOUT_GLASS_POSTER}
                   width={720}
                   height={1280}
-                  crossfade={0.85}
+                  crossfade={1.2}
                 />
               )}
             </div>

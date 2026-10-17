@@ -5,7 +5,7 @@ const PLANS = [
     name: 'Basic',
     kind: 'Starter website',
     price: '€450',
-    period: '',
+    period: 'from',
     description:
       'The first connection. A focused website built to establish your digital presence.',
     features: [
@@ -100,7 +100,7 @@ export default function PricingSection() {
             Clear packages. <span className="text-gradient">Premium craft.</span>
           </h2>
           <p className="section-lede section-lede--dark">
-            Transparent starting points in euros — every engagement is tailored
+            Transparent starting points in euros. Every engagement is tailored
             after a short discovery call.
           </p>
         </header>

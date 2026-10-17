@@ -18,8 +18,8 @@ const PROJECTS = [
   {
     title: 'Blake Salon',
     kind: 'Salon website',
-    badge: 'Live site',
-    live: true,
+    badge: 'Concept',
+    live: false,
     body: 'A sharp, quiet barbershop presence with editorial photography and a booking-first structure.',
     features: [
       'High-contrast editorial layout',
@@ -34,8 +34,8 @@ const PROJECTS = [
   {
     title: 'The Medusa',
     kind: 'Brand website',
-    badge: 'Live site',
-    live: true,
+    badge: 'Concept',
+    live: false,
     body: 'A myth-forward brand site with liquid-glass energy, modular panels and strong motion cues.',
     features: [
       'Modular information cards',
@@ -50,8 +50,8 @@ const PROJECTS = [
   {
     title: 'CtrlAltDesigner',
     kind: 'Portfolio website',
-    badge: 'Live site',
-    live: true,
+    badge: 'Concept',
+    live: false,
     body: 'A portfolio built for clarity, from first layout to a live URL, with a futuristic but focused voice.',
     features: [
       'Clear service positioning',
@@ -133,14 +133,24 @@ function ProjectCard({ project }) {
             ))}
           </ul>
         </div>
-        <a
-          className="btn btn-primary project-card__cta"
-          href={project.href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View live site
-        </a>
+        {project.live ? (
+          <a
+            className="btn btn-primary project-card__cta"
+            href={project.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View live site
+          </a>
+        ) : (
+          <span
+            className="btn project-card__cta project-card__cta--concept"
+            title="Coming soon"
+            aria-disabled="true"
+          >
+            View concept
+          </span>
+        )}
       </div>
     </article>
   )

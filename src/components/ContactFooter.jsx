@@ -84,7 +84,7 @@ export default function ContactFooter() {
 
             <p className="contact-form__status" role="status" aria-live="polite">
               {status === 'sent'
-                ? 'Thanks — I’ll reply within two business days.'
+                ? "Thanks, I'll reply within two business days."
                 : 'No spam. Discovery call if we’re a fit.'}
             </p>
           </form>

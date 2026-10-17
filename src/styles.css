@@ -2289,6 +2289,7 @@ html.has-motion-fx .glass-card:hover::before {
   background: rgba(255, 255, 255, 0.12);
   z-index: 0;
   overflow: visible;
+  pointer-events: none;
 }
 
 .process__line-fill {
@@ -2309,7 +2310,7 @@ html.has-motion-fx .glass-card:hover::before {
   position: absolute;
   top: 50%;
   left: calc(var(--process-progress, 0) * 100%);
-  z-index: 2;
+  z-index: 1;
   width: 9px;
   height: 9px;
   border-radius: 50%;
@@ -2328,7 +2329,7 @@ html.has-motion-fx .glass-card:hover::before {
   margin: 0;
   padding: 0;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: clamp(0.85rem, 2vw, 1.5rem);
@@ -2367,6 +2368,7 @@ html.has-motion-fx .glass-card:hover::before {
 
 .process__circle {
   position: relative;
+  z-index: 2;
   isolation: isolate;
   display: flex;
   align-items: center;
@@ -2378,7 +2380,15 @@ html.has-motion-fx .glass-card:hover::before {
   margin-bottom: 1.15rem;
   border-radius: 50%;
   border: 1px solid rgba(122, 162, 255, 0.35);
-  background: rgba(255, 255, 255, 0.05);
+  /* Opaque fill so the progress line stays behind the number */
+  background:
+    linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(59, 108, 255, 0.12) 50%,
+      rgba(8, 12, 24, 0.98) 100%
+    ),
+    #080c18;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: none;

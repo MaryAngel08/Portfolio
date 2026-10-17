@@ -198,26 +198,22 @@ export default function HeroGlass() {
             <div className="hero-glass__copy">
               <p className="hero-glass__eyebrow">Web designer</p>
               <h1 className="hero-glass__title">
-                Modern websites
+                Good design
                 <br />
-                that make
-                <br />
-                your brand
+                isn&apos;t just seen.
                 <br />
                 <span className="hero-glass__title-gradient text-gradient">
-                  stand out.
+                  It&apos;s experienced.
                 </span>
               </h1>
               <p className="hero-glass__intro">
-                I&apos;m a website designer who turns ideas into clean, modern and
-                user-friendly websites that work as well as they look.
+                I create thoughtful digital experiences that bring brands to life
+                through purposeful design, seamless interactions, and a
+                distinctive visual identity.
               </p>
               <div className="hero-glass__actions">
                 <a className="hero-glass__btn hero-glass__btn--primary" href="#skills">
-                  View my work
-                </a>
-                <a className="hero-glass__text-link" href="#contact">
-                  Get in touch
+                  Discover my work
                 </a>
               </div>
             </div>

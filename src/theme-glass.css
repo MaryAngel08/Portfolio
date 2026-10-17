@@ -539,14 +539,25 @@
 }
 
 .theme-glass .hero-glass__btn--primary {
+  gap: 0.4rem;
   background: var(--blue);
   color: #ffffff;
   border-color: var(--blue);
 }
 
+.theme-glass .hero-glass__btn--primary::after {
+  content: '→';
+  display: inline-block;
+  transition: transform 0.25s var(--ease);
+}
+
 .theme-glass .hero-glass__btn--primary:hover {
   background: #2f4fc4;
   border-color: #2f4fc4;
+}
+
+.theme-glass .hero-glass__btn--primary:hover::after {
+  transform: translateX(3px);
 }
 
 .theme-glass .hero-glass__text-link {

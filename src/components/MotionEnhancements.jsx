@@ -15,13 +15,74 @@ function canEnhance() {
   )
 }
 
+const REVEAL_SELECTOR = [
+  '.section-title',
+  '.section-eyebrow',
+  '.section-lede',
+  '.section-header',
+  '.glass-card',
+  '.project-card',
+  '.pricing-card',
+  '.contact-form',
+  '.contact__copy',
+  '.discover-title',
+  '.discover-body',
+  '.discover-eyebrow',
+  '.discover-traits',
+  '.discover-actions',
+  '.discover-stage',
+  '.services__row',
+  '.tools-tech__copy',
+  '.pricing__note',
+].join(', ')
+
 /**
- * Fine-pointer only: glass spotlight + scroll reveals.
- * Card lift is CSS-only (same as Services) — no floating / antigravity.
+ * Fine-pointer glass spotlight + light scroll reveals (content only).
  */
 export default function MotionEnhancements() {
   useEffect(() => {
-    if (!canEnhance()) return undefined
+    const reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    const setupReveals = () => {
+      if (reduceMq.matches) return () => {}
+
+      const revealEls = Array.from(document.querySelectorAll(REVEAL_SELECTOR)).filter(
+        (el) => !el.closest('.hero-glass, .hero-pin, .site-nav'),
+      )
+      revealEls.forEach((el) => el.classList.add('reveal'))
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return
+            entry.target.classList.add('is-revealed')
+            io.unobserve(entry.target)
+          })
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+      )
+      revealEls.forEach((el) => io.observe(el))
+      return () => io.disconnect()
+    }
+
+    let teardownReveal = setupReveals()
+
+    const onReduceChange = () => {
+      teardownReveal?.()
+      document.querySelectorAll('.reveal').forEach((el) => {
+        el.classList.remove('reveal', 'is-revealed')
+        el.style.transitionDelay = ''
+      })
+      teardownReveal = setupReveals()
+    }
+    reduceMq.addEventListener('change', onReduceChange)
+
+    if (!canEnhance()) {
+      return () => {
+        reduceMq.removeEventListener('change', onReduceChange)
+        teardownReveal?.()
+      }
+    }
 
     document.documentElement.classList.add('has-motion-fx')
 
@@ -29,7 +90,6 @@ export default function MotionEnhancements() {
     const midY = window.innerHeight / 2
     const pointer = { x: midX, y: midY, sx: midX, sy: midY }
     let raf = 0
-
     const cards = []
 
     const collect = () => {
@@ -72,38 +132,15 @@ export default function MotionEnhancements() {
     raf = requestAnimationFrame(tick)
     window.addEventListener('pointermove', onMove, { passive: true })
 
-    const revealEls = Array.from(
-      document.querySelectorAll(
-        '[data-reveal], .site-section, .hero-glass, .site-footer, .contact',
-      ),
-    )
-    const unique = [...new Set(revealEls)]
-    let revealIndex = 0
-    unique.forEach((el) => el.classList.add('reveal'))
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return
-          const el = entry.target
-          el.style.transitionDelay = `${revealIndex * 80}ms`
-          revealIndex += 1
-          el.classList.add('is-revealed')
-          io.unobserve(el)
-        })
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
-    )
-    unique.forEach((el) => io.observe(el))
-
     const mo = new MutationObserver(() => collect())
     mo.observe(document.body, { childList: true, subtree: true })
 
     return () => {
       cancelAnimationFrame(raf)
       window.removeEventListener('pointermove', onMove)
-      io.disconnect()
       mo.disconnect()
+      reduceMq.removeEventListener('change', onReduceChange)
+      teardownReveal?.()
       document.documentElement.classList.remove('has-motion-fx')
     }
   }, [])

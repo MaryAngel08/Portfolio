@@ -101,7 +101,11 @@ export default function PricingSection() {
           </h2>
           <p className="section-lede section-lede--dark">
             Transparent starting points in euros. Every engagement is tailored
-            after a short discovery call.
+            after a short conversation by email.
+          </p>
+          <p className="section-lede section-lede--dark pricing__note">
+            Direct communication, no middlemen, and a clear process from first
+            email to launch.
           </p>
         </header>
 
@@ -137,7 +141,11 @@ export default function PricingSection() {
               </ul>
 
               <a
-                className="btn btn-primary pricing-card__cta"
+                className={`btn pricing-card__cta${
+                  plan.highlighted
+                    ? ' pricing-card__cta--filled'
+                    : ' btn-primary pricing-card__cta--glass'
+                }`}
                 href="#contact"
               >
                 {plan.cta}

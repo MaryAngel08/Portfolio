@@ -46,22 +46,37 @@ export default function SeamlessVideo({
     video.loop = true
     video.style.opacity = '1'
 
+    const isCovered = () =>
+      Boolean(root.closest('.hero-glass.is-covered'))
+
     const playSafe = () => {
+      if (isCovered()) return
       const p = video.play()
       if (p?.catch) p.catch(() => {})
     }
 
+    const sync = () => {
+      if (isCovered()) video.pause()
+      else playSafe()
+    }
+
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) playSafe()
+        if (entry.isIntersecting && !isCovered()) playSafe()
         else video.pause()
       },
       { threshold: 0.12 },
     )
     io.observe(root)
+
+    const mo = new MutationObserver(sync)
+    const hero = root.closest('.hero-glass')
+    if (hero) mo.observe(hero, { attributes: true, attributeFilter: ['class'] })
+
     playSafe()
     return () => {
       io.disconnect()
+      mo.disconnect()
       video.pause()
     }
   }, [reduceMotion, lite, webm, mp4])
@@ -93,13 +108,17 @@ export default function SeamlessVideo({
       setOpacity(v, i === 0 ? 1 : 0)
     })
 
+    const isCovered = () =>
+      Boolean(root.closest('.hero-glass.is-covered'))
+
     const playSafe = (v) => {
+      if (isCovered()) return
       const p = v.play()
       if (p?.catch) p.catch(() => {})
     }
 
     const startFront = () => {
-      if (!visible || reduceMotion) return
+      if (!visible || reduceMotion || isCovered()) return
       const active = layers[front]
       playSafe(active)
     }
@@ -150,7 +169,7 @@ export default function SeamlessVideo({
 
     const tick = () => {
       raf = requestAnimationFrame(tick)
-      if (!visible || fading) return
+      if (!visible || fading || isCovered()) return
 
       const active = layers[front]
       const standby = layers[1 - front]
@@ -163,10 +182,18 @@ export default function SeamlessVideo({
       }
     }
 
+    const syncCovered = () => {
+      if (isCovered()) {
+        layers.forEach((v) => v.pause())
+      } else if (visible) {
+        startFront()
+      }
+    }
+
     const io = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting
-        if (visible) {
+        if (visible && !isCovered()) {
           startFront()
         } else {
           layers.forEach((v) => v.pause())
@@ -176,8 +203,12 @@ export default function SeamlessVideo({
     )
     io.observe(root)
 
+    const mo = new MutationObserver(syncCovered)
+    const hero = root.closest('.hero-glass')
+    if (hero) mo.observe(hero, { attributes: true, attributeFilter: ['class'] })
+
     const onReady = () => {
-      if (visible) startFront()
+      if (visible && !isCovered()) startFront()
     }
     videoA.addEventListener('loadeddata', onReady)
 
@@ -188,6 +219,7 @@ export default function SeamlessVideo({
       cancelAnimationFrame(raf)
       window.clearTimeout(fadeTimer)
       io.disconnect()
+      mo.disconnect()
       videoA.removeEventListener('loadeddata', onReady)
       layers.forEach((v) => v.pause())
     }

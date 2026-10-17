@@ -13,6 +13,7 @@ const PROJECTS = [
     skills: ['HTML', 'CSS', 'JavaScript', 'UI Design'],
     desktop: '/images/projects/caffe-desktop.png',
     mobile: '/images/projects/caffe-mobile.png',
+    phoneAlt: 'Caffè Brasilia mobile website preview',
     href: 'https://caffebrasilia.vercel.app/',
   },
   {
@@ -29,6 +30,7 @@ const PROJECTS = [
     skills: ['HTML', 'CSS', 'JavaScript', 'UX'],
     desktop: '/images/projects/blake-desktop.png',
     mobile: '/images/projects/blake-mobile.png',
+    phoneAlt: 'Blake Salon mobile website preview',
     href: 'https://blake-salon.vercel.app/',
   },
   {
@@ -45,14 +47,15 @@ const PROJECTS = [
     skills: ['HTML', 'CSS', 'JavaScript', 'Branding'],
     desktop: '/images/projects/medusa-desktop.png',
     mobile: '/images/projects/medusa-mobile.png',
+    phoneAlt: 'The Medusa mobile website preview',
     href: 'https://themedusa.vercel.app/',
   },
   {
     title: 'CtrlAltDesigner',
-    kind: 'Portfolio website',
+    kind: 'Personal portfolio',
     badge: 'Concept',
     live: false,
-    body: 'A portfolio built for clarity, from first layout to a live URL, with a futuristic but focused voice.',
+    body: 'My personal portfolio — clarity from first layout to a live URL, with a futuristic but focused voice.',
     features: [
       'Clear service positioning',
       'Conversion-ready CTAs',
@@ -61,6 +64,7 @@ const PROJECTS = [
     skills: ['HTML', 'CSS', 'JavaScript', 'Figma'],
     desktop: '/images/projects/ctrlalt-desktop.png',
     mobile: '/images/projects/ctrlalt-mobile.png',
+    phoneAlt: 'CtrlAltDesigner personal portfolio mobile preview',
     href: 'https://ctrlaltdesigner.vercel.app/',
   },
 ]
@@ -69,7 +73,7 @@ function ProjectCard({ project }) {
   return (
     <article className="project-card">
       <div className="project-card__main">
-        <div className="project-card__media" aria-hidden="true">
+        <div className="project-card__media">
           <div className="project-card__devices">
             <div className="project-card__laptop">
               <div className="project-card__laptop-screen">
@@ -80,15 +84,17 @@ function ProjectCard({ project }) {
                   height={800}
                   loading="lazy"
                   decoding="async"
+                  aria-hidden="true"
                 />
               </div>
               <div className="project-card__laptop-base" />
             </div>
             <div className="project-card__phone">
-              <div className="project-card__phone-notch" />
+              <div className="project-card__phone-notch" aria-hidden="true" />
               <img
+                className="project-card__phone-img"
                 src={project.mobile}
-                alt=""
+                alt={project.phoneAlt}
                 width={390}
                 height={844}
                 loading="lazy"
@@ -133,24 +139,16 @@ function ProjectCard({ project }) {
             ))}
           </ul>
         </div>
-        {project.live ? (
-          <a
-            className="btn btn-primary project-card__cta"
-            href={project.href}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View live site
-          </a>
-        ) : (
-          <span
-            className="btn btn-primary project-card__cta project-card__cta--concept"
-            title="Coming soon"
-            aria-disabled="true"
-          >
-            View concept
-          </span>
-        )}
+        <a
+          className={`btn btn-primary project-card__cta${
+            project.live ? '' : ' project-card__cta--concept'
+          }`}
+          href={project.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {project.live ? 'View live site' : 'View concept'}
+        </a>
       </div>
     </article>
   )

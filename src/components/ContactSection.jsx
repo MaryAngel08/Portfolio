@@ -88,8 +88,11 @@ export default function ContactSection() {
               <div>
                 <dt>Email</dt>
                 <dd>
-                  <a href="mailto:hello@glasswave.studio">hello@glasswave.studio</a>
+                  <a href="mailto:mary-designer@outlook.com">
+                    mary-designer@outlook.com
+                  </a>
                 </dd>
+                <p className="contact__reply">Usually replies within 24 hours.</p>
               </div>
               <div>
                 <dt>Location</dt>
@@ -232,13 +235,13 @@ export default function ContactSection() {
               Send message
             </button>
 
-            <p className="contact-form__status" role="status" aria-live="polite">
-              {status === 'sent'
-                ? "Thanks, I'll reply soon."
-                : status === 'error'
-                  ? 'Please fix the fields above and try again.'
-                  : 'No spam. Discovery call if we’re a fit.'}
-            </p>
+            {status === 'sent' || status === 'error' ? (
+              <p className="contact-form__status" role="status" aria-live="polite">
+                {status === 'sent'
+                  ? "Thanks, I'll reply soon."
+                  : 'Please fix the fields above and try again.'}
+              </p>
+            ) : null}
           </form>
         </div>
       </div>

@@ -35,8 +35,8 @@ export default function ContactFooter() {
             <p className="section-lede section-lede--dark">
               Tell me about your brand, timeline, and the feeling you want the work to leave.
             </p>
-            <a className="contact-footer__email" href="mailto:hello@glasswave.studio">
-              hello@glasswave.studio
+            <a className="contact-footer__email" href="mailto:mary-designer@outlook.com">
+              mary-designer@outlook.com
             </a>
           </header>
 

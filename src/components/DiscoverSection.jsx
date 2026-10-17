@@ -127,12 +127,13 @@ export default function DiscoverSection() {
             <span className="text-gradient">Mary.</span>
           </h2>
           <p className="discover-body">
-            I&apos;m Mary, a web designer based in Austria. I started building
-            websites because I loved how design and code come together. I&apos;m
-            early in my career, which means every project gets my full attention,
-            fast replies and fresh ideas. I design in Figma, build with clean
-            HTML, CSS and JavaScript, and care most about sites that feel clear
-            and easy to use.
+            I&apos;m Mary, a web designer based in Austria. I build websites
+            because I love the place where design and code meet. As an
+            independent designer, I work directly with every client: you get my
+            full attention, fast replies and fresh ideas, with no account
+            managers in between. I design in Figma, build with clean HTML, CSS
+            and JavaScript, and care most about sites that feel clear and easy
+            to use.
           </p>
 
           <ul className="discover-traits">
@@ -153,8 +154,8 @@ export default function DiscoverSection() {
               <span>Beautiful across every screen</span>
             </li>
             <li>
-              <strong>Always Learning</strong>
-              <span>Design and front-end growing</span>
+              <strong>Always Improving</strong>
+              <span>Keeping my design and front-end craft sharp.</span>
             </li>
           </ul>
 

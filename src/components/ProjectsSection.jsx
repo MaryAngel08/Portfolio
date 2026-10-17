@@ -144,7 +144,7 @@ function ProjectCard({ project }) {
           </a>
         ) : (
           <span
-            className="btn project-card__cta project-card__cta--concept"
+            className="btn btn-primary project-card__cta project-card__cta--concept"
             title="Coming soon"
             aria-disabled="true"
           >
@@ -171,7 +171,6 @@ export default function ProjectsSection() {
         <div className="projects__glow projects__glow--a" />
         <div className="projects__glow projects__glow--b" />
         <div className="projects__glow projects__glow--c" />
-        <div className="projects__glow projects__glow--d" />
       </div>
       <div className="section-inner projects__inner">
         <header className="projects__header">

@@ -87,7 +87,7 @@ export default function ProcessSection() {
           <ol className="process__steps">
             {STEPS.map((step) => (
               <li key={step.title} className="process__step">
-                <div className="process__circle glass-card glass-card--dark">
+                <div className="process__circle">
                   <span className="process__num">{step.n}</span>
                 </div>
                 <h3 className="process__step-title">{step.title}</h3>

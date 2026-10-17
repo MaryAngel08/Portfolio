@@ -54,7 +54,7 @@ export default function SiteFooter() {
     <footer className="site-footer section-dark" data-reveal>
       <div className="section-inner site-footer__inner">
         <a className="site-footer__logo" href="#top">
-          GlassWave
+          Mary
         </a>
 
         <nav className="site-footer__nav" aria-label="Footer">
@@ -78,7 +78,7 @@ export default function SiteFooter() {
         </div>
 
         <p className="site-footer__copy">
-          © {new Date().getFullYear()} GlassWave · Austria
+          © {new Date().getFullYear()} Mary · Austria
         </p>
       </div>
     </footer>

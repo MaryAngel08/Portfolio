@@ -93,7 +93,7 @@ export default function ContactFooter() {
         <hr className="divider" />
 
         <div className="site-footer-bar">
-          <p className="site-footer-bar__brand">GlassWave</p>
+          <p className="site-footer-bar__brand">Mary</p>
           <nav className="site-footer-bar__nav" aria-label="Footer">
             {NAV.map((item) => (
               <a key={item.href} href={item.href}>
@@ -102,7 +102,7 @@ export default function ContactFooter() {
             ))}
           </nav>
           <p className="site-footer-bar__copy">
-            © {new Date().getFullYear()} GlassWave. Crafted light for modern brands.
+            © {new Date().getFullYear()} Mary. Crafted light for modern brands.
           </p>
         </div>
       </div>

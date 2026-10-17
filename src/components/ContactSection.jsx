@@ -99,7 +99,7 @@ export default function ContactSection() {
           </header>
 
           <form
-            className="glass-card glass-card--light contact-form"
+            className="contact-form"
             onSubmit={onSubmit}
             noValidate
           >

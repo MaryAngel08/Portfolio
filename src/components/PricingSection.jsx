@@ -137,7 +137,7 @@ export default function PricingSection() {
               </ul>
 
               <a
-                className={`btn ${plan.highlighted ? 'btn-primary' : 'btn-ghost'} pricing-card__cta`}
+                className="btn btn-primary pricing-card__cta"
                 href="#contact"
               >
                 {plan.cta}

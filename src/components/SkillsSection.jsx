@@ -113,10 +113,9 @@ export default function SkillsSection() {
         <ul className="services__list">
           {SERVICES.map((service, index) => (
             <li key={service.title} className="services__row">
-              <span className="services__index">
-                {String(index + 1).padStart(2, '0')}.
-              </span>
-              <h3 className="services__name">{service.title}</h3>
+              <h3 className="services__name">
+                {index + 1}. {service.title}
+              </h3>
               <p className="services__body">{service.body}</p>
               <span className="services__icon" aria-hidden="true">
                 <ServiceIcon name={service.icon} />

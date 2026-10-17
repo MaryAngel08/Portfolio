@@ -162,7 +162,6 @@ export default function DiscoverSection() {
             <a className="btn btn-primary" href="#contact">
               Let&apos;s work together
             </a>
-            <p className="discover-location">Based in Austria</p>
           </div>
         </div>
 
